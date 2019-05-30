@@ -8,6 +8,16 @@
     "grpc-tools": "^1.7.3",
     "grpc_tools_node_protoc_ts": "^2.5.1",
     "protobufjs": "^6.8.8",
-    "typescript": "^3.5.1"
+    "ts-loader": "^6.0.1",
+    "typescript": "^3.5.1",
+    "webpack": "^4.32.2",
+    "webpack-cli": "^3.3.2",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "scripts": {
+    "build": "./generateProtoGrpcFiles.sh && webpack -p",
+    "start": "./generateProtoGrpcFiles.sh && webpack --watch",
+    "test": "tsc test/example.ts && node test/example.js",
+    "clean": "rm -rf build && rm -rf client && rm -f test/example.js"
   }
 }

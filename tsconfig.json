@@ -7,10 +7,10 @@
         "rootDir": "src",
         "target": "es5",
         "downlevelIteration": true,
-        "declaration": true
+        "declaration": true,
+        "sourceMap": true
     },
     "include":[
-        "client/*",
         "src/**/*"
     ],
     "exclude": [

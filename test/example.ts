@@ -1,4 +1,4 @@
-import { CochlearSense } from "./sense";
+import { CochlearSense } from "../build/CochlearSense";
 
 import { readFileSync } from "fs";
 
