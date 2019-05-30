@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "noImplicitAny": true,
+        "removeComments": true,
+        "outDir": "build",
+        "rootDir": "src",
+        "target": "es5",
+        "downlevelIteration": true,
+        "declaration": true
+    },
+    "include":[
+        "client/*",
+        "src/**/*"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}
