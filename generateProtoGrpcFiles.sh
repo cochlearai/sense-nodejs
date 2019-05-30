@@ -1,8 +1,8 @@
 #!/bin/sh
-OUTPUT_DIRECTORY="client"
+OUTPUT_DIRECTORY="proto"
 NODE_BIN="node_modules/.bin"
 
-mkdir -p client
+mkdir -p ${OUTPUT_DIRECTORY}
 export PATH="$(pwd)/${NODE_BIN}:$PATH"
 
 grpc_tools_node_protoc CochlearaiSenseClient.proto\

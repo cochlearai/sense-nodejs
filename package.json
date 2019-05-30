@@ -4,6 +4,7 @@
   "dependencies": {
     "google-protobuf": "^3.8.0",
     "grpc": "^1.21.1",
+    "node-portaudio": "^0.4.9",
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
@@ -20,6 +21,6 @@
     "build": "./generateProtoGrpcFiles.sh && webpack -p",
     "start": "./generateProtoGrpcFiles.sh && webpack --watch",
     "test": "tsc test/example.ts && node test/example.js",
-    "clean": "rm -rf build && rm -rf client && rm -f test/example.js"
+    "clean": "rm -rf build && rm -rf proto && rm -f test/example.js"
   }
 }
