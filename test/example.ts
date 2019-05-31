@@ -6,7 +6,7 @@ import * as portAudio from "node-portaudio";
 const apiKey=process.env.SENSE_API_KEY;
 const client = new CochlearSense(apiKey);
 
-const SECOND_RECORDING = 1000;
+const SECOND_RECORDING = 10;
 
 /*
 const buffer = readFileSync("./audio_sample.mp3");
