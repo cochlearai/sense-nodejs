@@ -1,9 +1,9 @@
 import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
 import { credentials } from "grpc";
 import { Readable } from 'stream';
-import { AudioFileConnection } from "./AudioFileConnection";
-import { AudioStreamConnection } from "./AudioStreamConnection";
-import { AudioConnection } from './AudioConnection';
+import { AudioFileConnection } from "./FileSense";
+import { AudioStreamConnection } from "./StreamSense";
+import { Sense } from './Sense';
 
 export class CochlearSense {
     private grpcClient: CochlearGrpc
@@ -14,11 +14,11 @@ export class CochlearSense {
         this.apiKey = apiKey
     }
 
-    file(buffer: Buffer, extension: string): AudioConnection {
+    sendFile(buffer: Buffer, extension: string): Sense {
         return new AudioFileConnection(buffer, extension, this.apiKey, this.grpcClient);
     }
 
-    stream(stream: Readable): AudioConnection {
+    sendStream(stream: Readable): Sense {
         return new AudioStreamConnection(stream, 22050, this.apiKey, this.grpcClient);
     }
 }

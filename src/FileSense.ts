@@ -1,8 +1,8 @@
-import { AudioConnection, CallbackType } from "./AudioConnection";
+import { Sense, CallbackType } from "./Sense";
 import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
 import { Request } from '../proto/CochlearaiSenseClient_pb';
 
-export class AudioFileConnection extends AudioConnection {
+export class AudioFileConnection extends Sense {
     private buffer: Buffer
     private extension: string
     private apiKey: string

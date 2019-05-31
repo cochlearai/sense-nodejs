@@ -3,7 +3,7 @@ import { Response } from "../proto/CochlearaiSenseClient_pb";
 
 export type CallbackType = (error: Error, result: any) => any
 
-export abstract class AudioConnection {
+export abstract class Sense {
     private static TIMEOUT = 10; //in second
 
     event(callback: CallbackType){}
@@ -20,7 +20,7 @@ export abstract class AudioConnection {
 
     protected getTimeOut(): Metadata{
         const metadata = new Metadata();
-        const timeout = new Date().setSeconds(new Date().getSeconds() + AudioConnection.TIMEOUT);
+        const timeout = new Date().setSeconds(new Date().getSeconds() + Sense.TIMEOUT);
         metadata.set('deadline', timeout.toString());
         return metadata;
     }

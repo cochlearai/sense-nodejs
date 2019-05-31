@@ -18,9 +18,9 @@ const cochlearClient = new CochlearSense(apiKey);
 const buffer = readFileSync("./audio_sample.mp3");
 const extension = "mp3";
 
-const fileConnection = cochlearClient.file(buffer, extension);
+const fileSense = cochlearClient.sendFile(buffer, extension);
 //You can also call music and speech method
-fileConnection.event(callback);
+fileSense.event(callback);
 
 
 
@@ -38,9 +38,9 @@ if(portAudio.getDevices().length === 0) {
         deviceId: -1,
     });
 
-    const streamConnection = cochlearClient.stream(audioInput);
+    const streamSense = cochlearClient.sendStream(audioInput);
     //You can also run the music and speech method
-    streamConnection.event(callback);
+    streamSense.event(callback);
 
     audioInput.start()
     setTimeout(() => {
