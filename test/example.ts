@@ -1,25 +1,32 @@
 import { CochlearSense } from "../build/CochlearSense";
-
 import { readFileSync } from "fs";
-import * as portAudio from "node-portaudio"; 
 
-const apiKey=process.env.SENSE_API_KEY;
-const client = new CochlearSense(apiKey);
-
-const SECOND_RECORDING = 10;
-
-/*
-const buffer = readFileSync("./audio_sample.mp3");
-const extension = "mp3";
-client.event(buffer, extension, (err, response) => {
+const callback = (err: Error, response: any) => {
     if(err){
         console.error(err);
     } else {
         console.log(response);
     }
-})
-*/
+}
 
+// Initialisationof the client
+// After this step, a grpc connection is open with cochlear.ai server
+const apiKey=process.env.SENSE_API_KEY;
+const cochlearClient = new CochlearSense(apiKey);
+
+//Fetching a local file
+const buffer = readFileSync("./audio_sample.mp3");
+const extension = "mp3";
+
+const fileConnection = cochlearClient.file(buffer, extension);
+//You can also call music and speech method
+fileConnection.event(callback);
+
+
+
+//Using microphone as audio stream
+import * as portAudio from "node-portaudio"; 
+const SECOND_RECORDING = 10;
 
 if(portAudio.getDevices().length === 0) {
     console.error("You don't have any availabe microphone to record");
@@ -30,14 +37,15 @@ if(portAudio.getDevices().length === 0) {
         sampleRate: 22050,
         deviceId: -1,
     });
+
+    const streamConnection = cochlearClient.stream(audioInput);
+    //You can also run the music and speech method
+    streamConnection.event(callback);
+
     audioInput.start()
     setTimeout(() => {
         audioInput.destroy();
     }, SECOND_RECORDING*1000)
-    
 
-    client.sendStream(audioInput, "event", (err, response) => {
-        console.log(err || response);
-    });
 }
 
