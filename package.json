@@ -20,7 +20,8 @@
   "scripts": {
     "build": "./generateProtoGrpcFiles.sh && webpack -p",
     "start": "./generateProtoGrpcFiles.sh && webpack --watch",
-    "test": "tsc test/example.ts && node test/example.js",
-    "clean": "rm -rf build && rm -rf proto && rm -f test/example.js"
+    "example-stream": "tsc example/example-stream.ts && node example/example-stream.js",
+    "example-file": "tsc example/example-file.ts && node example/example-file.js",
+    "clean": "rm -rf build && rm -rf proto && rm -f example/example-file.js example/example-stream.js"
   }
 }

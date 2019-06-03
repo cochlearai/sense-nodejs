@@ -30,14 +30,15 @@ This command is doing two things : 
 
 You can have access to all library file in the `./build` folder.
 
-### Testing
+### Launch Examples
 
+For testing a file, run 
 ```
-npm run test
+npm run example-file
 ```
 
-The test is running in parallel streaming audio and file audio analysis.
-Port audio can print lot of error message. It's not a problem.
-You'll read streaming analyse result every 0.5 second.
-The file analyse result will appeared in the middle in this results. It's normal.
-The test will record audio for 10 second and then stop.
+For testing a stream from your microphone, make sure  [port-audio](http://www.portaudio.com/) is installed on your system.
+Then run 
+```
+npm run example-stream
+```
