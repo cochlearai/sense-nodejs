@@ -9,15 +9,16 @@ if (portAudio.getDevices().length === 0) {
 else {
     var apiKey = process.env.SENSE_API_KEY;
     var cochlearClient = new CochlearSense_1.CochlearSense(apiKey);
+    var samplingRate = 22050;
     var audioInput_1 = new portAudio.AudioIO({
         inOptions: {
             channelCount: 1,
             sampleFormat: portAudio.SampleFormat32Bit,
-            sampleRate: 22050,
+            sampleRate: samplingRate,
             deviceId: -1
         }
     });
-    var streamSense = cochlearClient.sendStream(audioInput_1);
+    var streamSense = cochlearClient.sendStream(audioInput_1, samplingRate, CochlearSense_1.SamplingFormat.Int32Bit);
     //You can also run the streamSense.music and streamSense.speech method
     streamSense.event(function (err, result) {
         if (err)

@@ -7,21 +7,25 @@
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
+    "@types/google-protobuf": "^3.2.7",
+    "@types/jest": "^24.0.13",
+    "grpc-tools": "^1.7.3",
+    "grpc_tools_node_protoc_ts": "2.5.0",
+    "jest": "^24.8.0",
+    "naudiodon": "^2.0.3",
+    "ts-jest": "^24.0.2",
     "ts-loader": "^6.0.1",
     "typescript": "^3.5.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-node-externals": "^1.7.2",
-    "grpc-tools": "^1.7.3",
-    "grpc_tools_node_protoc_ts": "2.5.0",
-    "@types/google-protobuf": "^3.2.7",
-    "naudiodon": "^2.0.3"
+    "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
     "build": "./generateProtoGrpcFiles.sh && webpack -p",
     "start": "./generateProtoGrpcFiles.sh && webpack --watch",
     "example-stream": "tsc example/example-stream.ts && node example/example-stream.js",
     "example-file": "tsc example/example-file.ts && node example/example-file.js",
-    "clean": "rm -rf build && rm -rf proto && rm -f example/example-file.js example/example-stream.js"
+    "clean": "rm -rf build && rm -rf proto && rm -f example/example-file.js example/example-stream.js",
+    "test": "jest"
   }
 }

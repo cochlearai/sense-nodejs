@@ -4,6 +4,10 @@ import { Readable } from 'stream';
 import { AudioFileConnection } from "./FileSense";
 import { AudioStreamConnection } from "./StreamSense";
 import { Sense } from './Sense';
+import { SamplingFormat } from "./SamplingFormat";
+
+
+export { SamplingFormat };
 
 export class CochlearSense {
     private grpcClient: CochlearGrpc
@@ -18,7 +22,7 @@ export class CochlearSense {
         return new AudioFileConnection(buffer, extension, this.apiKey, this.grpcClient);
     }
 
-    sendStream(stream: Readable): Sense {
-        return new AudioStreamConnection(stream, 22050, this.apiKey, this.grpcClient);
+    sendStream(stream: Readable, samplingRate: number, samplingFormat: SamplingFormat): Sense {
+        return new AudioStreamConnection(stream, samplingRate, samplingFormat, this.apiKey, this.grpcClient);
     }
 }

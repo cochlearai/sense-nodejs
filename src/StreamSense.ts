@@ -3,19 +3,22 @@ import { Readable } from "stream";
 import { RequestStream, Response } from "../proto/CochlearaiSenseClient_pb";
 import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
 import StreamChunkToBuffer from './StreamChunkToBuffer';
+import { SamplingFormat } from './SamplingFormat'
 
 export class AudioStreamConnection extends Sense {
     private rate: number;
     private apiKey: string
     private grpcClient: CochlearGrpc
     private stream: Readable;
+    private samplingFormat: SamplingFormat
 
-    constructor(stream: Readable, rate: number, apiKey: string, grpcClient: CochlearGrpc){
+    constructor(stream: Readable, rate: number, samplingFormat: SamplingFormat, apiKey: string, grpcClient: CochlearGrpc){
         super();
         this.rate=rate;
         this.apiKey = apiKey;
         this.grpcClient = grpcClient;
         this.stream = stream;
+        this.samplingFormat = samplingFormat;
     }
 
     event(callback: CallbackType){
@@ -35,13 +38,14 @@ export class AudioStreamConnection extends Sense {
         const call = this.grpcClient.cochlearai_stream(timeOutMetadata);
 
         const onResult = this.callbackAdaptor(callback);
-        const streamChunkToBuffer = new StreamChunkToBuffer(this.rate);
+        const streamChunkToBuffer = new StreamChunkToBuffer(this.rate, this.samplingFormat);
 
         this.stream.on("data", (chunk: Uint8Array) => {
             streamChunkToBuffer.push(chunk);
             while(streamChunkToBuffer.isBufferReady()){
                 const buffer = streamChunkToBuffer.consumeBuffer();
-                const request = this.createRequest(buffer, task);
+                const dataType = streamChunkToBuffer.getSamplingFormat();
+                const request = this.createRequest(buffer, task, dataType);
                 call.write(request);
             }
         });
@@ -66,13 +70,13 @@ export class AudioStreamConnection extends Sense {
         call.on("error", closeOnError)
     }
 
-    private createRequest(buffer: Uint8Array, task: string): RequestStream {
+    private createRequest(buffer: Uint8Array, task: string, dataType: string): RequestStream {
         const request = new RequestStream();
         request.setApikey(this.apiKey);
         request.setData(buffer);
         request.setTask(task);
         request.setSr(this.rate)
-        request.setDtype("int32")
+        request.setDtype(dataType)
         return request;
     }
 }

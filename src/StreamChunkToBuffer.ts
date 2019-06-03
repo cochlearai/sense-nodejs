@@ -1,14 +1,20 @@
+import { SamplingFormat } from "./SamplingFormat";
+
 export default class StreamChunkToBuffer {
     private readonly bufferSize : number
+    private static readonly SENDING_RATE = 2 //Buffer will be 1/SENDING_RATE seconds long
     private buffer: Uint8Array
     private bufferIndex = 0;
 
     private filledBuffers: Uint8Array[] = []
+    private samplingFormat: SamplingFormat
 
-    constructor(rate: number){
+    constructor(samplingRate: number, samplingFormat: SamplingFormat){
         // Sending every 0.5 second (Rate / 2) a 32bit information: 4 Bytes
-        this.bufferSize = rate * 4 / 2;
+        const samplingSize = SamplingFormat.samplingFormatToByteCount(samplingFormat);
+        this.bufferSize = samplingRate * samplingSize / StreamChunkToBuffer.SENDING_RATE;
         this.buffer = new Uint8Array(this.bufferSize)
+        this.samplingFormat = samplingFormat;
     }
 
     push(chunk: Uint8Array) {
@@ -36,5 +42,10 @@ export default class StreamChunkToBuffer {
             throw new Error("Cannot send a partial buffer.");
         }
         return this.filledBuffers.shift();
+    }
+
+    getSamplingFormat(): string {
+        return SamplingFormat.samplingFormatToNumberType(this.samplingFormat) +
+        (8*SamplingFormat.samplingFormatToByteCount(this.samplingFormat));
     }
 }
