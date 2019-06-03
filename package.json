@@ -4,7 +4,6 @@
   "dependencies": {
     "google-protobuf": "^3.8.0",
     "grpc": "^1.21.1",
-    "node-portaudio": "^0.4.9",
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
@@ -15,7 +14,8 @@
     "webpack-node-externals": "^1.7.2",
     "grpc-tools": "^1.7.3",
     "grpc_tools_node_protoc_ts": "2.5.0",
-    "@types/google-protobuf": "^3.2.7"
+    "@types/google-protobuf": "^3.2.7",
+    "naudiodon": "^2.0.3"
   },
   "scripts": {
     "build": "./generateProtoGrpcFiles.sh && webpack -p",

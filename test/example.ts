@@ -25,17 +25,19 @@ fileSense.event(callback);
 
 
 //Using microphone as audio stream
-import * as portAudio from "node-portaudio"; 
+import * as portAudio from "naudiodon"; 
 const SECOND_RECORDING = 10;
 
 if(portAudio.getDevices().length === 0) {
     console.error("You don't have any availabe microphone to record");
 } else {
-    const audioInput = new portAudio.AudioInput({
-        channelCount: 1,
-        sampleFormat: portAudio.SampleFormat32Bit,
-        sampleRate: 22050,
-        deviceId: -1,
+    const audioInput = new portAudio.AudioIO({
+        inOptions: {
+            channelCount: 1,
+            sampleFormat: portAudio.SampleFormat32Bit,
+            sampleRate: 22050,
+            deviceId: -1,    
+        }
     });
 
     const streamSense = cochlearClient.sendStream(audioInput);
