@@ -14,7 +14,8 @@ export abstract class Sense {
         if(error){
             callback(error, undefined);
         } else {
-            callback(error, response.getOutputs());
+            const json = JSON.parse(response.getOutputs());
+            callback(error, json);
         }
     }
 
