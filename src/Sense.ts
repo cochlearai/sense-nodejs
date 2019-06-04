@@ -1,17 +1,17 @@
-import { Metadata } from 'grpc';
+import { Metadata } from "grpc";
 import { Response } from "../proto/CochlearaiSenseClient_pb";
 
-export type CallbackType = (error: Error, result: any) => any
+export type CallbackType = (error: Error, result: any) => any;
 
 export abstract class Sense {
-    private static TIMEOUT = 10; //in second
+    private static TIMEOUT = 10; // in second
 
-    event(callback: CallbackType){}
-    music(callback: CallbackType){}
-    speech(callback: CallbackType){}
+    public abstract event(callback: CallbackType): void;
+    public abstract music(callback: CallbackType): void;
+    public abstract speech(callback: CallbackType): void;
 
     protected callbackAdaptor = (callback: CallbackType) => (error: Error, response: Response) => {
-        if(error){
+        if (error) {
             callback(error, undefined);
         } else {
             const json = JSON.parse(response.getOutputs());
@@ -19,10 +19,10 @@ export abstract class Sense {
         }
     }
 
-    protected getTimeOut(): Metadata{
+    protected getTimeOut(): Metadata {
         const metadata = new Metadata();
         const timeout = new Date().setSeconds(new Date().getSeconds() + Sense.TIMEOUT);
-        metadata.set('deadline', timeout.toString());
+        metadata.set("deadline", timeout.toString());
         return metadata;
     }
 }

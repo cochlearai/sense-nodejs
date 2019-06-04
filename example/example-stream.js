@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
-var CochlearSense_1 = require("../build/CochlearSense");
 var portAudio = require("naudiodon");
+var CochlearSense_1 = require("../build/CochlearSense");
 var SECOND_RECORDING = 10;
 if (portAudio.getDevices().length === 0) {
     console.error("No microphones are available for recording.");
@@ -13,18 +13,20 @@ else {
     var audioInput_1 = new portAudio.AudioIO({
         inOptions: {
             channelCount: 1,
+            deviceId: -1,
             sampleFormat: portAudio.SampleFormat32Bit,
-            sampleRate: samplingRate,
-            deviceId: -1
+            sampleRate: samplingRate
         }
     });
     var streamSense = cochlearClient.sendStream(audioInput_1, samplingRate, CochlearSense_1.SamplingFormat.Int32Bit);
-    //You can also run the streamSense.music and streamSense.speech method
+    // You can also run the streamSense.music and streamSense.speech method
     streamSense.event(function (err, result) {
-        if (err)
+        if (err) {
             console.error(err);
-        else
-            console.log(result);
+        }
+        else {
+            console.log(JSON.stringify(result));
+        }
     });
     audioInput_1.start();
     setTimeout(function () {

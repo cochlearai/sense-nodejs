@@ -1,4 +1,4 @@
-import { SamplingFormat } from '../SamplingFormat';
+import { SamplingFormat } from "../SamplingFormat";
 
 describe("SamplingFormat", () => {
     test("Test int 8bit", () => {
@@ -49,4 +49,4 @@ describe("SamplingFormat", () => {
         expect(SamplingFormat.samplingFormatToNumberType(sf)).toBe("float");
     });
 
-})
+});

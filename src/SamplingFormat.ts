@@ -6,12 +6,12 @@ export enum SamplingFormat {
     Float64Bit,
     Float32Bit,
     Float16Bit,
-    Float8Bit
+    Float8Bit,
 }
 
 export namespace SamplingFormat {
     export function samplingFormatToByteCount(samplingFormat: SamplingFormat): number {
-        switch(samplingFormat){
+        switch (samplingFormat) {
             case SamplingFormat.Int8Bit:
             case SamplingFormat.Float8Bit:
                 return 1;
@@ -30,7 +30,7 @@ export namespace SamplingFormat {
     }
 
     export function samplingFormatToNumberType(samplingFormat: SamplingFormat): string {
-        switch(samplingFormat){
+        switch (samplingFormat) {
             case SamplingFormat.Int8Bit:
             case SamplingFormat.Int16Bit:
             case SamplingFormat.Int32Bit:

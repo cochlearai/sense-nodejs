@@ -15,6 +15,8 @@
     "naudiodon": "^2.0.3",
     "ts-jest": "^24.0.2",
     "ts-loader": "6.0.2",
+    "tslint": "^5.17.0",
+    "tslint-loader": "^3.5.4",
     "typescript": "^3.5.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
@@ -26,6 +28,7 @@
     "example-stream": "tsc example/example-stream.ts && node example/example-stream.js",
     "example-file": "tsc example/example-file.ts && node example/example-file.js",
     "clean": "rm -rf build && rm -rf proto && rm -f example/example-file.js example/example-stream.js",
-    "test": "jest"
+    "test": "jest",
+    "lint": "tslint src/*.ts src/**/*.ts example/*.ts"
   }
 }
