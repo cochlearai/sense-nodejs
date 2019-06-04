@@ -4,23 +4,31 @@
   "dependencies": {
     "google-protobuf": "^3.8.0",
     "grpc": "^1.21.1",
-    "node-portaudio": "^0.4.9",
     "protobufjs": "^6.8.8"
   },
   "devDependencies": {
-    "ts-loader": "^6.0.1",
+    "@types/google-protobuf": "^3.2.7",
+    "@types/jest": "^24.0.13",
+    "grpc-tools": "^1.7.3",
+    "grpc_tools_node_protoc_ts": "2.5.0",
+    "jest": "^24.8.0",
+    "naudiodon": "^2.0.3",
+    "ts-jest": "^24.0.2",
+    "ts-loader": "6.0.2",
+    "tslint": "^5.17.0",
+    "tslint-loader": "^3.5.4",
     "typescript": "^3.5.1",
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
-    "webpack-node-externals": "^1.7.2",
-    "grpc-tools": "^1.7.3",
-    "grpc_tools_node_protoc_ts": "2.5.0",
-    "@types/google-protobuf": "^3.2.7"
+    "webpack-node-externals": "^1.7.2"
   },
   "scripts": {
     "build": "./generateProtoGrpcFiles.sh && webpack -p",
     "start": "./generateProtoGrpcFiles.sh && webpack --watch",
-    "test": "tsc test/example.ts && node test/example.js",
-    "clean": "rm -rf build && rm -rf proto && rm -f test/example.js"
+    "example-stream": "tsc example/example-stream.ts && node example/example-stream.js",
+    "example-file": "tsc example/example-file.ts && node example/example-file.js",
+    "clean": "rm -rf build && rm -rf proto && rm -f example/example-file.js example/example-stream.js",
+    "test": "jest",
+    "lint": "tslint src/*.ts src/**/*.ts example/*.ts"
   }
 }
