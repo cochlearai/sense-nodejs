@@ -1,4 +1,4 @@
-import { SamplingFormat } from "../CochlearSense";
+import { SamplingFormat } from "../SenseClient";
 import StreamChunkToBuffer from "../StreamChunkToBuffer";
 
 describe("StreamChunkToBuffer", () => {

@@ -1,5 +1,5 @@
 import * as portAudio from "naudiodon";
-import { SenseClient, SamplingFormat } from "../build/SenseClient";
+import { SamplingFormat, SenseClient } from "../build/SenseClient";
 const SECOND_RECORDING = 10;
 
 if (portAudio.getDevices().length === 0) {

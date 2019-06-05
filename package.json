@@ -1,5 +1,5 @@
 {
-  "name": "cochlearai-sense-node-client",
+  "name": "cochlearai-sense-client",
   "version": "0.1.0",
   "dependencies": {
     "google-protobuf": "^3.8.0",

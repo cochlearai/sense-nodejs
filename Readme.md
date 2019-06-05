@@ -24,9 +24,7 @@ npm install
 npm run build
 ```
 
-This command is doing two things : 
-- Creating protobuff and grpc files definition that will be used by the library
-- Building and bundling the library in one js file.
+This command build and bundle the library in one js file, and create the typescript definition file.
 
 You can have access to all library file in the `./build` folder.
 
