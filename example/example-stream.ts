@@ -9,7 +9,7 @@ if (portAudio.getDevices().length === 0) {
     const senseClient = new SenseClient(apiKey);
 
     const samplingRate = 22050;
-    const audioInput = new portAudio.AudioIO({
+    const audioInput = portAudio.AudioIO({
         inOptions: {
             channelCount: 1,
             deviceId: -1,

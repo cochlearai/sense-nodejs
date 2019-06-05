@@ -10,7 +10,7 @@ else {
     var apiKey = process.env.SENSE_API_KEY;
     var senseClient = new SenseClient_1.SenseClient(apiKey);
     var samplingRate = 22050;
-    var audioInput_1 = new portAudio.AudioIO({
+    var audioInput_1 = portAudio.AudioIO({
         inOptions: {
             channelCount: 1,
             deviceId: -1,
