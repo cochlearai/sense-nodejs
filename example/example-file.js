@@ -1,9 +1,9 @@
 "use strict";
 exports.__esModule = true;
 var fs_1 = require("fs");
-var CochlearSense_1 = require("../build/CochlearSense");
+var SenseClient_1 = require("../build/SenseClient");
 var apiKey = process.env.SENSE_API_KEY;
-var cochlearClient = new CochlearSense_1.CochlearSense(apiKey);
+var cochlearClient = new SenseClient_1.SenseClient(apiKey);
 var buffer = fs_1.readFileSync("./audio_sample.mp3");
 var extension = "mp3";
 var fileSense = cochlearClient.sendFile(buffer, extension);

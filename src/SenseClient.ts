@@ -1,6 +1,6 @@
 import { credentials } from "grpc";
 import { Readable } from "stream";
-import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
+import { SenseClient as SenseClientGrpc } from "../proto/SenseClient_grpc_pb";
 import { AudioFileConnection } from "./FileSense";
 import { SamplingFormat } from "./SamplingFormat";
 import { Sense } from "./Sense";
@@ -8,12 +8,12 @@ import { AudioStreamConnection } from "./StreamSense";
 
 export { SamplingFormat };
 
-export class CochlearSense {
-    private grpcClient: CochlearGrpc;
+export class SenseClient {
+    private grpcClient: SenseClientGrpc;
     private apiKey: string;
 
-    constructor(apiKey: string, host: string = "35.229.175.68:50051") {
-        this.grpcClient = new CochlearGrpc(host, credentials.createInsecure());
+    constructor(apiKey: string, host: string = "sense.cochlear.ai:50051") {
+        this.grpcClient = new SenseClientGrpc(host, credentials.createInsecure());
         this.apiKey = apiKey;
     }
 

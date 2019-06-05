@@ -1,6 +1,6 @@
 import { Readable } from "stream";
-import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
-import { RequestStream, Response } from "../proto/CochlearaiSenseClient_pb";
+import { SenseClient as SenseClientGrpc } from "../proto/SenseClient_grpc_pb";
+import { RequestStream, Response } from "../proto/SenseClient_pb";
 import { SamplingFormat } from "./SamplingFormat";
 import { CallbackType, Sense } from "./Sense";
 import StreamChunkToBuffer from "./StreamChunkToBuffer";
@@ -8,7 +8,7 @@ import StreamChunkToBuffer from "./StreamChunkToBuffer";
 export class AudioStreamConnection extends Sense {
     private rate: number;
     private apiKey: string;
-    private grpcClient: CochlearGrpc;
+    private grpcClient: SenseClientGrpc;
     private stream: Readable;
     private samplingFormat: SamplingFormat;
 
@@ -16,7 +16,7 @@ export class AudioStreamConnection extends Sense {
                 rate: number,
                 samplingFormat: SamplingFormat,
                 apiKey: string,
-                grpcClient: CochlearGrpc) {
+                grpcClient: SenseClientGrpc) {
         super();
         this.rate = rate;
         this.apiKey = apiKey;
@@ -39,7 +39,7 @@ export class AudioStreamConnection extends Sense {
 
     private sendStream(task: string, callback: CallbackType) {
         const timeOutMetadata = this.getTimeOut();
-        const call = this.grpcClient.cochlearai_stream(timeOutMetadata);
+        const call = this.grpcClient.sense_stream(timeOutMetadata);
 
         const onResult = this.callbackAdaptor(callback);
         const streamChunkToBuffer = new StreamChunkToBuffer(this.rate, this.samplingFormat);

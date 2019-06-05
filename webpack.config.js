@@ -3,7 +3,7 @@ const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   entry: {
-      CochlearSense: './src/CochlearSense.ts'
+      SenseClient: './src/SenseClient.ts'
   },
   output: {
     filename: '[name].js',

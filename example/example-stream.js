@@ -1,14 +1,14 @@
 "use strict";
 exports.__esModule = true;
 var portAudio = require("naudiodon");
-var CochlearSense_1 = require("../build/CochlearSense");
+var SenseClient_1 = require("../build/SenseClient");
 var SECOND_RECORDING = 10;
 if (portAudio.getDevices().length === 0) {
     console.error("No microphones are available for recording.");
 }
 else {
     var apiKey = process.env.SENSE_API_KEY;
-    var cochlearClient = new CochlearSense_1.CochlearSense(apiKey);
+    var senseClient = new SenseClient_1.SenseClient(apiKey);
     var samplingRate = 22050;
     var audioInput_1 = new portAudio.AudioIO({
         inOptions: {
@@ -18,7 +18,7 @@ else {
             sampleRate: samplingRate
         }
     });
-    var streamSense = cochlearClient.sendStream(audioInput_1, samplingRate, CochlearSense_1.SamplingFormat.Int32Bit);
+    var streamSense = senseClient.sendStream(audioInput_1, samplingRate, SenseClient_1.SamplingFormat.Int32Bit);
     // You can also run the streamSense.music and streamSense.speech method
     streamSense.event(function (err, result) {
         if (err) {

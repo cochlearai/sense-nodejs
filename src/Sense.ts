@@ -1,5 +1,5 @@
 import { Metadata } from "grpc";
-import { Response } from "../proto/CochlearaiSenseClient_pb";
+import { Response } from "../proto/SenseClient_pb";
 
 export type CallbackType = (error: Error, result: any) => any;
 

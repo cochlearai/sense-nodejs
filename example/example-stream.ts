@@ -1,12 +1,12 @@
 import * as portAudio from "naudiodon";
-import { CochlearSense, SamplingFormat } from "../build/CochlearSense";
+import { SenseClient, SamplingFormat } from "../build/SenseClient";
 const SECOND_RECORDING = 10;
 
 if (portAudio.getDevices().length === 0) {
     console.error("No microphones are available for recording.");
 } else {
     const apiKey = process.env.SENSE_API_KEY;
-    const cochlearClient = new CochlearSense(apiKey);
+    const senseClient = new SenseClient(apiKey);
 
     const samplingRate = 22050;
     const audioInput = new portAudio.AudioIO({
@@ -18,7 +18,7 @@ if (portAudio.getDevices().length === 0) {
         },
     });
 
-    const streamSense = cochlearClient.sendStream(audioInput, samplingRate, SamplingFormat.Int32Bit);
+    const streamSense = senseClient.sendStream(audioInput, samplingRate, SamplingFormat.Int32Bit);
     // You can also run the streamSense.music and streamSense.speech method
     streamSense.event((err, result) => {
         if (err) {

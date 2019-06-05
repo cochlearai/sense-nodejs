@@ -1,8 +1,8 @@
 import { readFileSync } from "fs";
-import { CochlearSense } from "../build/CochlearSense";
+import { SenseClient } from "../build/SenseClient";
 
 const apiKey = process.env.SENSE_API_KEY;
-const cochlearClient = new CochlearSense(apiKey);
+const cochlearClient = new SenseClient(apiKey);
 
 const buffer = readFileSync("./audio_sample.mp3");
 const extension = "mp3";

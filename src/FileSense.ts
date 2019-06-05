@@ -1,5 +1,5 @@
-import { CochlearaiSenseClient as CochlearGrpc } from "../proto/CochlearaiSenseClient_grpc_pb";
-import { Request } from "../proto/CochlearaiSenseClient_pb";
+import { SenseClient as SenseClientGrpc } from "../proto/SenseClient_grpc_pb";
+import { Request } from "../proto/SenseClient_pb";
 import { CallbackType, Sense } from "./Sense";
 
 export class AudioFileConnection extends Sense {
@@ -7,9 +7,9 @@ export class AudioFileConnection extends Sense {
     private buffer: Buffer;
     private extension: string;
     private apiKey: string;
-    private grpcClient: CochlearGrpc;
+    private grpcClient: SenseClientGrpc;
 
-    constructor(buffer: Buffer, extension: string, apiKey: string, grpcClient: CochlearGrpc) {
+    constructor(buffer: Buffer, extension: string, apiKey: string, grpcClient: SenseClientGrpc) {
         super();
         this.buffer = buffer;
         this.extension = extension;
@@ -31,7 +31,7 @@ export class AudioFileConnection extends Sense {
 
     private sendData(task: string, callback: CallbackType) {
         const timeOutMetadata = this.getTimeOut();
-        const call = this.grpcClient.cochlearai(timeOutMetadata, this.callbackAdaptor(callback));
+        const call = this.grpcClient.sense(timeOutMetadata, this.callbackAdaptor(callback));
 
         const requestsIterator = this.createRequestIterator(task);
         for ( const request of requestsIterator) {
