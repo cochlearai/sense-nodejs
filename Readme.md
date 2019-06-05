@@ -1,4 +1,4 @@
-# nodejs-client
+# sense-nodejs
 
 This repository implement a library working with nodejs to interact with Cochlear.ai backend.
 
