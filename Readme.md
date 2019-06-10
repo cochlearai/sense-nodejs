@@ -1,4 +1,4 @@
-# sense-nodejs
+# sense-nodejs (Sense API beta-v2)
 
 This repository implement a library working with nodejs to interact with Cochlear.ai backend.
 
