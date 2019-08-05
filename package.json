@@ -1,6 +1,8 @@
 {
-  "name": "cochlearai-sense-client",
-  "version": "0.1.0",
+  "name": "cochl-sense",
+  "version": "2.0.1-beta1",
+  "main": "./build/SenseClient.js",
+  "types": "./build/SenseClient.d.ts",
   "dependencies": {
     "google-protobuf": "^3.8.0",
     "grpc": "^1.21.1",
