@@ -13,6 +13,6 @@ fileSense.event(function (err, result) {
         console.error(err);
     }
     else {
-        console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result, null, 3));
     }
 });

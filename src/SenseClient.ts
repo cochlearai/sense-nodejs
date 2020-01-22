@@ -12,7 +12,7 @@ export class SenseClient {
     private grpcClient: SenseClientGrpc;
     private apiKey: string;
 
-    constructor(apiKey: string, host: string = "34.80.243.56:50051") {
+    constructor(apiKey: string, host: string = "sense.cochlear.ai:50051") {
         this.grpcClient = new SenseClientGrpc(host, credentials.createInsecure());
         this.apiKey = apiKey;
     }
