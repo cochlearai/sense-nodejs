@@ -1,6 +1,6 @@
 {
   "name": "cochl-sense",
-  "version": "2.0.2-beta",
+  "version": "2.1.0-beta",
   "main": "./build/SenseClient.js",
   "types": "./build/SenseClient.d.ts",
   "dependencies": {

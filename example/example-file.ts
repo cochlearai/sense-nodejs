@@ -14,6 +14,6 @@ fileSense.event((err, result) => {
     if (err) {
         console.error(err);
     } else {
-        console.log(JSON.stringify(result));
+        console.log(JSON.stringify(result, null, 3));
     }
 });
