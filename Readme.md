@@ -1,110 +1,188 @@
-# cochl-sense (Sense API beta-v2)
+# Sense Nodejs
 
-This repository implement a library working with nodejs to interact with Cochlear.ai backend.
-An API key is required for this library to work. You can get an API key on https://cochlear.ai/ website.
+This repository is splitted in two folders : 
+- `cochl-sense` contains the source code of the cochlear.ai sense nodejs client
+- `examples` contains examples sample
 
-## Dependencies 
+## Quick start
 
-Nodejs-client library depends on `grpc`, `google-protobuf` and `protobufjs`.
+Go in examples folder
 
-## Use nodejs package 
+Install dependencies : `npm install`
 
-Make sure to have `node` and `npm` installed.
+Modify `apiKey` in `file.js` and `naudiodon.js` with one of your API key that you can get at https://dashboard.cochlear.ai
 
-Install cochl-sense nodejs client : 
-`npm install cochl-sense`
+You can now inference a file : `node file.js`
 
-### Analyse a file
+Or inference audio from your microphone : `node naudiodon.js`
 
-If you want to analyse a file, run the following script.
-(You will need to replace API-KEY and "./music.mp3" for your case).
+## Use the library
 
+To use our library, install it by running `npm install cochl-sense`.
+
+You can now import classes :
+```js
+const { FileBuilder, StreamBuilder, Datatype } = require("cochl-sense")
 ```
-const SenseClient = require("cochl-sense").SenseClient;
-const fs  = require("fs");
 
-const client = new SenseClient("API-KEY");
-const buffer = fs.readFileSync("./music.mp3");
-const extension = "mp3";
+### File
 
-function callback(err, result){
-	if(err){
-		console.error(err);
-	} else {
-		console.log(JSON.stringify(result));
-	}
+`File` represents a class that can inference audio coming from an audio file.
+
+An audio file is any source of audio data which duration is known at runtime.
+Because duration is known at runtime, server will wait for the whole file to be received before 
+to start inferencing. All inferenced data will be received in one payload.
+
+A file can be for instance, a mp3 file stored locally, a wav file accessible from an url etc...
+
+So far wav, flac, mp3, ogg, mp4 are supported.
+
+If you are using another file encoding format, let us know at support@cochlear.ai so that we can priorize it in our internal roadmap.
+
+`File` implements the following interface : 
+
+```typescript
+interface File {
+    inference(): Promise<Result>;
 }
-
-client.sendFile(buffer,extension).event(callback);
 ```
 
-### Analyse a stream
-If you want to analyse a stream, our client needs to access your micrpophone. You can use for instance naudiodon : 
-```
-npm install naudiodon
-```
+When calling `inference`, a GRPC connection will be established with the backend, audio data of the file will be sent and a `Result` instance will be returned in case of success (described bellow).
 
-And run the following script : (enter your API Key)
-```
-const portAudio = require("naudiodon");
-const SenseClient = require("cochl-sense").SenseClient;
-const SamplingFormat = require("cochl-sense").SamplingFormat;
+Note that network is not reached until `inference` method is called.
 
-var senseClient = new SenseClient("API-KEY");
-var samplingRate = 22050;
-var audioStream = portAudio.AudioIO({
-	inOptions: {
-	    channelCount: 1,
-	    deviceId: -1,
-	    sampleFormat: portAudio.SampleFormat32Bit,
-	    sampleRate: samplingRate
-	}
-});
+Note that `inference` can be called only once per `File` instance.
 
-function callback(err,result) {
-	if(err) {
-		console.error(err);
-	} else {
-		console.log(JSON.stringify(result));
-	}
+To create a `File` instance, you need to use a `FileBuilder` instance. `FileBuilder` is following the builder pattern and calling its `build` method will create a `File` instance.
+
+`FileBuider` implements the following interface :
+
+```typescript
+interface FileBuilder {
+    /** api key of cochlear.ai projects available at https://dashboard.cochlear.ai */
+    withAPIKey(key: string): FileBuilder;
+    /** format of the audio file : can be mp3, flac, wav, ogg, etc... */
+    withFormat(format: string): FileBuilder;
+    /** data reader to the file data */
+    withReader(reader: Buffer): FileBuilder;
+    
+    /** creates a File instance*/
+    build(): File;
 }
-
-senseClient.sendStream(audioStream, samplingRate, SamplingFormat.Int32Bit).event(callback);
-
-audioStream.start();
 ```
 
-## Build package from source
+Note that `withAPIKey`, `withFormat` and `withReader` method needs to be called before calling the `build` method, otherwise an error will be thrown.
 
-Make sure to have install `node` and `npm`.
+### Stream
 
-Clone the github repository : https://github.com/cochlearai/sense-nodejs
+`Stream` represents a class that can inference audio coming from an audio stream.
 
-### Initialisation
+An audio stream is any source of data which duration is not known at runtime. 
+Because duration is not known, server will inference audio as it comes. One second of audio will be required before the first result to be returned. After that, one result will be given every 0.5 second of audio.
 
+A stream can be for instance, the audio data comming from a microphone, audio data comming from a web radio etc...
+
+Streams can be stopped at any moment while inferencing.
+
+For now, the only format that is supported for streaming is a raw data stream (PCM stream). 
+Raw data being sent has to be a **mono channel** audio stream. Its sampling rate and data type (int16, int32, float32) has to be given to describe the raw audio data. 
+
+For best performance, we recommand using a sampling rate of 22050Hz and data represented as float32.
+
+Multiple results will be returned by calling a callback function.
+
+If you are using another stream encoding format that is not supported, let us know at support@cochlear.ai so that we can priorize it in our internal roadmap.
+
+`Stream` implements the following interface : 
+
+```typescript
+interface Stream {
+    inference(callback: (err?: Error, resp?: Result) => any): void;
+}
 ```
-npm install
+
+When calling `inference`, a GRPC connection will be established with the backend, audio data of the stream will be sent every 0.5s.
+Once result is returned by the server, the `callback` function is called.
+
+- `err` will be undefined in case of success
+- `resp` will be undefined in case of failure
+
+
+Note that network is not reached until `inference` method is called.
+
+Note that inference can be called only once per `Stream` instance.
+
+To create a `Stream` instance, you need to use a `StreamBuilder` instance. `StreamBuilder` is following the builder pattern and calling its `build` method will create a `Stream` instance.
+
+`StreamBuider` implements the following interface :
+
+```typescript
+interface SrteamBuilder {
+    /** api key of cochlear.ai projects available at dashboard.cochlear.ai */
+    withApiKey(key: string): StreamBuilder;
+    /** type of the pcm stream */
+    withDataType(datatype: string): StreamBuilder;
+    /** sampling rate of the pcm stream */
+    withSamplingRate(samplingRate: number): StreamBuilder;
+    /** data of the pcm stream */
+    withStreamer(streamer: Readable): StreamBuilder;
+
+    /** creates a Stream instance*/
+    build(): Stream;
+
+    /** disable sampling rate check */
+    deactivateLowSamplingRateWarning(): StreamBuilder;
+    /** max number of events from previous inference to keep in memory */
+    withMaxHistoryEventsSize(size: number): StreamBuilder;
+}
 ```
 
-### Building
+Note that `withAPIKey`, `withDataType`, `withSamplingRate` and `withStreamer` method needs to be called before calling the `build` method, otherwise an error will be thrown.
 
+
+### Result
+
+Result is a class that is returned by both file and stream when calling `inference` method.
+
+Multiple results will be returned by a stream by calling a callback function. For a file only one result will be returned.
+
+`Result` implements the following interface :
+```typescript
+    /** returns all events */
+    allEvents(): Event[];
+    /** returns all events that match the "filter function" defined below */
+    detectedEvents(): Event[];
+    /** group events that match the "filter function" and shows segments of time of when events were detected */
+    detectedEventTiming(): Map<string, Array<[number, number]>>;
+    /** return only the "tag" of the event that match the "filter" function */
+    detectedTags(): string[];
+    /** returns the service name : "human-interaction" or "emergency" for instance*/
+    service(): string;
+    /** returns a raw json object containing service name and an array of events */
+    toJSON(): string;
+    /** use a filter function : that function takes an event as input and return a boolean. An event will be "detected" if the filter function returns true for that event */
+    useDefaultFilter(): Result;
+    /** the default filter is to consider all events as detected. So by default, allEvents() and detectedEvents() will return the same result */
+    withFilter(filter: (ev: Event) => boolean): Result;
 ```
-npm run build
-```
 
-This command build and bundle the library in one js file, and create the typescript definition file.
+Note that if you are inferencing a stream, multiple results will be returned. By default, calling allEvents() will only returned the newly inferenced result.
+It's possible to keep track of previous events of the stream. To do so, call the `withMaxEventsHistorySize` method on the `StreamBuilder` class. Its default value is 0,
+and increasing it will allow to "remember" previous events. 
 
-You can have access to all library file in the `./build` folder.
+### Event
 
-### Launch Examples
+An event contains the following data :
 
-For testing a file, run 
-```
-npm run example-file
-```
-
-For testing a stream from your microphone, make sure  [port-audio](http://www.portaudio.com/) is installed on your system.
-Then run 
-```
-npm run example-stream
+```typescript
+class Event {
+    /** name of the detected event */
+    tag: string;
+    /** start timestamp of the detected event since the begining of the inference */
+    startTime: number;
+    /** end timestamp of the detected event since the begining of the inference */
+    endTime: number;
+    /** probablity for the event to happen. Its values is between 0 and 1 */
+    probability: string;
+}
 ```

@@ -1,0 +1,37 @@
+{
+  "name": "cochl-sense",
+  "version": "1.0.0",
+  "description": "Cochlearai nodejs client",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint -p tsconfig.json",
+    "format": "tslint --fix -p tsconfig.json ",
+    "prepare": "npm run build",
+    "prepublishOnly": "npm run lint",
+    "preversion": "npm run lint",
+    "version": "npm run lint && git add -A src",
+    "postversion": "git push && git push --tags"
+  },
+  "author": "support@cochlear.ai",
+  "keywords": [
+    "ai",
+    "nodejs",
+    "cochlearai",
+    "audio"
+  ],
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^13.13.4",
+    "tslint": "^6.1.2",
+    "typescript": "^3.8.3"
+  },
+  "files": [
+    "lib/**/*"
+  ],
+  "dependencies": {
+    "google-protobuf": "^3.11.4",
+    "grpc": "^1.24.2"
+  }
+}

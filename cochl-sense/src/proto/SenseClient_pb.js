@@ -1,8 +1,6 @@
 /**
  * @fileoverview
  * @enhanceable
- * @suppress {messageConventions} JS Compiler reports an error if a variable or
- *     field starts with 'MSG_' and isn't a translatable message.
  * @public
  */
 // GENERATED CODE -- DO NOT EDIT!
@@ -57,15 +55,14 @@ proto.sense.full.v1.Request.prototype.toObject = function(opt_includeInstance) {
  *     http://goto/soy-param-migration
  * @param {!proto.sense.full.v1.Request} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.sense.full.v1.Request.toObject = function(includeInstance, msg) {
   var f, obj = {
     data: msg.getData_asB64(),
-    task: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    apikey: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    format: jspb.Message.getFieldWithDefault(msg, 4, ""),
-    clientVersion: jspb.Message.getFieldWithDefault(msg, 8, "")
+    apikey: msg.getApikey(),
+    format: msg.getFormat(),
+    apiVersion: msg.getApiVersion(),
+    userAgent: msg.getUserAgent()
   };
 
   if (includeInstance) {
@@ -108,19 +105,19 @@ proto.sense.full.v1.Request.deserializeBinaryFromReader = function(msg, reader) 
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTask(value);
+      msg.setApikey(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setApikey(value);
+      msg.setFormat(value);
       break;
     case 4:
       var value = /** @type {string} */ (reader.readString());
-      msg.setFormat(value);
+      msg.setApiVersion(value);
       break;
-    case 8:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setClientVersion(value);
+      msg.setUserAgent(value);
       break;
     default:
       reader.skipField();
@@ -132,60 +129,78 @@ proto.sense.full.v1.Request.deserializeBinaryFromReader = function(msg, reader) 
 
 
 /**
+ * Class method variant: serializes the given message to binary data
+ * (in protobuf wire format), writing to the given BinaryWriter.
+ * @param {!proto.sense.full.v1.Request} message
+ * @param {!jspb.BinaryWriter} writer
+ */
+proto.sense.full.v1.Request.serializeBinaryToWriter = function(message, writer) {
+  message.serializeBinaryToWriter(writer);
+};
+
+
+/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.sense.full.v1.Request.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.sense.full.v1.Request.serializeBinaryToWriter(this, writer);
+  this.serializeBinaryToWriter(writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.sense.full.v1.Request} message
+ * Serializes the message to binary data (in protobuf wire format),
+ * writing to the given BinaryWriter.
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.sense.full.v1.Request.serializeBinaryToWriter = function(message, writer) {
+proto.sense.full.v1.Request.prototype.serializeBinaryToWriter = function (writer) {
   var f = undefined;
-  f = message.getData_asU8();
+  f = this.getData_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = message.getTask();
+  f = this.getApikey();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getApikey();
+  f = this.getFormat();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getFormat();
+  f = this.getApiVersion();
   if (f.length > 0) {
     writer.writeString(
       4,
       f
     );
   }
-  f = message.getClientVersion();
+  f = this.getUserAgent();
   if (f.length > 0) {
     writer.writeString(
-      8,
+      5,
       f
     );
   }
+};
+
+
+/**
+ * Creates a deep clone of this proto. No data is shared with the original.
+ * @return {!proto.sense.full.v1.Request} The clone.
+ */
+proto.sense.full.v1.Request.prototype.cloneMessage = function() {
+  return /** @type {!proto.sense.full.v1.Request} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -194,7 +209,7 @@ proto.sense.full.v1.Request.serializeBinaryToWriter = function(message, writer) 
  * @return {!(string|Uint8Array)}
  */
 proto.sense.full.v1.Request.prototype.getData = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
 };
 
 
@@ -222,69 +237,69 @@ proto.sense.full.v1.Request.prototype.getData_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value */
+/** @param {!(string|Uint8Array)} value  */
 proto.sense.full.v1.Request.prototype.setData = function(value) {
-  jspb.Message.setProto3BytesField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
 /**
- * optional string task = 2;
- * @return {string}
- */
-proto.sense.full.v1.Request.prototype.getTask = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.sense.full.v1.Request.prototype.setTask = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string apikey = 3;
+ * optional string apikey = 2;
  * @return {string}
  */
 proto.sense.full.v1.Request.prototype.getApikey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
 };
 
 
-/** @param {string} value */
+/** @param {string} value  */
 proto.sense.full.v1.Request.prototype.setApikey = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
 /**
- * optional string format = 4;
+ * optional string format = 3;
  * @return {string}
  */
 proto.sense.full.v1.Request.prototype.getFormat = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 4, ""));
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 3, ""));
 };
 
 
-/** @param {string} value */
+/** @param {string} value  */
 proto.sense.full.v1.Request.prototype.setFormat = function(value) {
-  jspb.Message.setProto3StringField(this, 4, value);
+  jspb.Message.setField(this, 3, value);
 };
 
 
 /**
- * optional string client_version = 8;
+ * optional string api_version = 4;
  * @return {string}
  */
-proto.sense.full.v1.Request.prototype.getClientVersion = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+proto.sense.full.v1.Request.prototype.getApiVersion = function() {
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 4, ""));
 };
 
 
-/** @param {string} value */
-proto.sense.full.v1.Request.prototype.setClientVersion = function(value) {
-  jspb.Message.setProto3StringField(this, 8, value);
+/** @param {string} value  */
+proto.sense.full.v1.Request.prototype.setApiVersion = function(value) {
+  jspb.Message.setField(this, 4, value);
+};
+
+
+/**
+ * optional string user_agent = 5;
+ * @return {string}
+ */
+proto.sense.full.v1.Request.prototype.getUserAgent = function() {
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
+};
+
+
+/** @param {string} value  */
+proto.sense.full.v1.Request.prototype.setUserAgent = function(value) {
+  jspb.Message.setField(this, 5, value);
 };
 
 
@@ -331,16 +346,15 @@ proto.sense.full.v1.RequestStream.prototype.toObject = function(opt_includeInsta
  *     http://goto/soy-param-migration
  * @param {!proto.sense.full.v1.RequestStream} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.sense.full.v1.RequestStream.toObject = function(includeInstance, msg) {
   var f, obj = {
     data: msg.getData_asB64(),
-    task: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    apikey: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    dtype: jspb.Message.getFieldWithDefault(msg, 5, ""),
-    sr: jspb.Message.getFieldWithDefault(msg, 6, 0),
-    clientVersion: jspb.Message.getFieldWithDefault(msg, 8, "")
+    apikey: msg.getApikey(),
+    dtype: msg.getDtype(),
+    sr: msg.getSr(),
+    apiVersion: msg.getApiVersion(),
+    userAgent: msg.getUserAgent()
   };
 
   if (includeInstance) {
@@ -383,23 +397,23 @@ proto.sense.full.v1.RequestStream.deserializeBinaryFromReader = function(msg, re
       break;
     case 2:
       var value = /** @type {string} */ (reader.readString());
-      msg.setTask(value);
+      msg.setApikey(value);
       break;
     case 3:
       var value = /** @type {string} */ (reader.readString());
-      msg.setApikey(value);
-      break;
-    case 5:
-      var value = /** @type {string} */ (reader.readString());
       msg.setDtype(value);
       break;
-    case 6:
+    case 4:
       var value = /** @type {number} */ (reader.readInt32());
       msg.setSr(value);
       break;
-    case 8:
+    case 5:
       var value = /** @type {string} */ (reader.readString());
-      msg.setClientVersion(value);
+      msg.setApiVersion(value);
+      break;
+    case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setUserAgent(value);
       break;
     default:
       reader.skipField();
@@ -411,67 +425,85 @@ proto.sense.full.v1.RequestStream.deserializeBinaryFromReader = function(msg, re
 
 
 /**
+ * Class method variant: serializes the given message to binary data
+ * (in protobuf wire format), writing to the given BinaryWriter.
+ * @param {!proto.sense.full.v1.RequestStream} message
+ * @param {!jspb.BinaryWriter} writer
+ */
+proto.sense.full.v1.RequestStream.serializeBinaryToWriter = function(message, writer) {
+  message.serializeBinaryToWriter(writer);
+};
+
+
+/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.sense.full.v1.RequestStream.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.sense.full.v1.RequestStream.serializeBinaryToWriter(this, writer);
+  this.serializeBinaryToWriter(writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.sense.full.v1.RequestStream} message
+ * Serializes the message to binary data (in protobuf wire format),
+ * writing to the given BinaryWriter.
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.sense.full.v1.RequestStream.serializeBinaryToWriter = function(message, writer) {
+proto.sense.full.v1.RequestStream.prototype.serializeBinaryToWriter = function (writer) {
   var f = undefined;
-  f = message.getData_asU8();
+  f = this.getData_asU8();
   if (f.length > 0) {
     writer.writeBytes(
       1,
       f
     );
   }
-  f = message.getTask();
+  f = this.getApikey();
   if (f.length > 0) {
     writer.writeString(
       2,
       f
     );
   }
-  f = message.getApikey();
+  f = this.getDtype();
   if (f.length > 0) {
     writer.writeString(
       3,
       f
     );
   }
-  f = message.getDtype();
+  f = this.getSr();
+  if (f !== 0) {
+    writer.writeInt32(
+      4,
+      f
+    );
+  }
+  f = this.getApiVersion();
   if (f.length > 0) {
     writer.writeString(
       5,
       f
     );
   }
-  f = message.getSr();
-  if (f !== 0) {
-    writer.writeInt32(
+  f = this.getUserAgent();
+  if (f.length > 0) {
+    writer.writeString(
       6,
       f
     );
   }
-  f = message.getClientVersion();
-  if (f.length > 0) {
-    writer.writeString(
-      8,
-      f
-    );
-  }
+};
+
+
+/**
+ * Creates a deep clone of this proto. No data is shared with the original.
+ * @return {!proto.sense.full.v1.RequestStream} The clone.
+ */
+proto.sense.full.v1.RequestStream.prototype.cloneMessage = function() {
+  return /** @type {!proto.sense.full.v1.RequestStream} */ (jspb.Message.cloneMessage(this));
 };
 
 
@@ -480,7 +512,7 @@ proto.sense.full.v1.RequestStream.serializeBinaryToWriter = function(message, wr
  * @return {!(string|Uint8Array)}
  */
 proto.sense.full.v1.RequestStream.prototype.getData = function() {
-  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldWithDefault(this, 1, ""));
+  return /** @type {!(string|Uint8Array)} */ (jspb.Message.getFieldProto3(this, 1, ""));
 };
 
 
@@ -508,84 +540,84 @@ proto.sense.full.v1.RequestStream.prototype.getData_asU8 = function() {
 };
 
 
-/** @param {!(string|Uint8Array)} value */
+/** @param {!(string|Uint8Array)} value  */
 proto.sense.full.v1.RequestStream.prototype.setData = function(value) {
-  jspb.Message.setProto3BytesField(this, 1, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 
 /**
- * optional string task = 2;
- * @return {string}
- */
-proto.sense.full.v1.RequestStream.prototype.getTask = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 2, ""));
-};
-
-
-/** @param {string} value */
-proto.sense.full.v1.RequestStream.prototype.setTask = function(value) {
-  jspb.Message.setProto3StringField(this, 2, value);
-};
-
-
-/**
- * optional string apikey = 3;
+ * optional string apikey = 2;
  * @return {string}
  */
 proto.sense.full.v1.RequestStream.prototype.getApikey = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 3, ""));
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 2, ""));
 };
 
 
-/** @param {string} value */
+/** @param {string} value  */
 proto.sense.full.v1.RequestStream.prototype.setApikey = function(value) {
-  jspb.Message.setProto3StringField(this, 3, value);
+  jspb.Message.setField(this, 2, value);
 };
 
 
 /**
- * optional string dtype = 5;
+ * optional string dtype = 3;
  * @return {string}
  */
 proto.sense.full.v1.RequestStream.prototype.getDtype = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 5, ""));
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 3, ""));
 };
 
 
-/** @param {string} value */
+/** @param {string} value  */
 proto.sense.full.v1.RequestStream.prototype.setDtype = function(value) {
-  jspb.Message.setProto3StringField(this, 5, value);
+  jspb.Message.setField(this, 3, value);
 };
 
 
 /**
- * optional int32 sr = 6;
+ * optional int32 sr = 4;
  * @return {number}
  */
 proto.sense.full.v1.RequestStream.prototype.getSr = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 6, 0));
+  return /** @type {number} */ (jspb.Message.getFieldProto3(this, 4, 0));
 };
 
 
-/** @param {number} value */
+/** @param {number} value  */
 proto.sense.full.v1.RequestStream.prototype.setSr = function(value) {
-  jspb.Message.setProto3IntField(this, 6, value);
+  jspb.Message.setField(this, 4, value);
 };
 
 
 /**
- * optional string client_version = 8;
+ * optional string api_version = 5;
  * @return {string}
  */
-proto.sense.full.v1.RequestStream.prototype.getClientVersion = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 8, ""));
+proto.sense.full.v1.RequestStream.prototype.getApiVersion = function() {
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 5, ""));
 };
 
 
-/** @param {string} value */
-proto.sense.full.v1.RequestStream.prototype.setClientVersion = function(value) {
-  jspb.Message.setProto3StringField(this, 8, value);
+/** @param {string} value  */
+proto.sense.full.v1.RequestStream.prototype.setApiVersion = function(value) {
+  jspb.Message.setField(this, 5, value);
+};
+
+
+/**
+ * optional string user_agent = 6;
+ * @return {string}
+ */
+proto.sense.full.v1.RequestStream.prototype.getUserAgent = function() {
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 6, ""));
+};
+
+
+/** @param {string} value  */
+proto.sense.full.v1.RequestStream.prototype.setUserAgent = function(value) {
+  jspb.Message.setField(this, 6, value);
 };
 
 
@@ -632,11 +664,10 @@ proto.sense.full.v1.Response.prototype.toObject = function(opt_includeInstance) 
  *     http://goto/soy-param-migration
  * @param {!proto.sense.full.v1.Response} msg The msg instance to transform.
  * @return {!Object}
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
 proto.sense.full.v1.Response.toObject = function(includeInstance, msg) {
   var f, obj = {
-    outputs: jspb.Message.getFieldWithDefault(msg, 7, "")
+    outputs: msg.getOutputs()
   };
 
   if (includeInstance) {
@@ -673,7 +704,7 @@ proto.sense.full.v1.Response.deserializeBinaryFromReader = function(msg, reader)
     }
     var field = reader.getFieldNumber();
     switch (field) {
-    case 7:
+    case 1:
       var value = /** @type {string} */ (reader.readString());
       msg.setOutputs(value);
       break;
@@ -687,29 +718,38 @@ proto.sense.full.v1.Response.deserializeBinaryFromReader = function(msg, reader)
 
 
 /**
+ * Class method variant: serializes the given message to binary data
+ * (in protobuf wire format), writing to the given BinaryWriter.
+ * @param {!proto.sense.full.v1.Response} message
+ * @param {!jspb.BinaryWriter} writer
+ */
+proto.sense.full.v1.Response.serializeBinaryToWriter = function(message, writer) {
+  message.serializeBinaryToWriter(writer);
+};
+
+
+/**
  * Serializes the message to binary data (in protobuf wire format).
  * @return {!Uint8Array}
  */
 proto.sense.full.v1.Response.prototype.serializeBinary = function() {
   var writer = new jspb.BinaryWriter();
-  proto.sense.full.v1.Response.serializeBinaryToWriter(this, writer);
+  this.serializeBinaryToWriter(writer);
   return writer.getResultBuffer();
 };
 
 
 /**
- * Serializes the given message to binary data (in protobuf wire
- * format), writing to the given BinaryWriter.
- * @param {!proto.sense.full.v1.Response} message
+ * Serializes the message to binary data (in protobuf wire format),
+ * writing to the given BinaryWriter.
  * @param {!jspb.BinaryWriter} writer
- * @suppress {unusedLocalVariables} f is only used for nested messages
  */
-proto.sense.full.v1.Response.serializeBinaryToWriter = function(message, writer) {
+proto.sense.full.v1.Response.prototype.serializeBinaryToWriter = function (writer) {
   var f = undefined;
-  f = message.getOutputs();
+  f = this.getOutputs();
   if (f.length > 0) {
     writer.writeString(
-      7,
+      1,
       f
     );
   }
@@ -717,17 +757,26 @@ proto.sense.full.v1.Response.serializeBinaryToWriter = function(message, writer)
 
 
 /**
- * optional string outputs = 7;
- * @return {string}
+ * Creates a deep clone of this proto. No data is shared with the original.
+ * @return {!proto.sense.full.v1.Response} The clone.
  */
-proto.sense.full.v1.Response.prototype.getOutputs = function() {
-  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 7, ""));
+proto.sense.full.v1.Response.prototype.cloneMessage = function() {
+  return /** @type {!proto.sense.full.v1.Response} */ (jspb.Message.cloneMessage(this));
 };
 
 
-/** @param {string} value */
+/**
+ * optional string outputs = 1;
+ * @return {string}
+ */
+proto.sense.full.v1.Response.prototype.getOutputs = function() {
+  return /** @type {string} */ (jspb.Message.getFieldProto3(this, 1, ""));
+};
+
+
+/** @param {string} value  */
 proto.sense.full.v1.Response.prototype.setOutputs = function(value) {
-  jspb.Message.setProto3StringField(this, 7, value);
+  jspb.Message.setField(this, 1, value);
 };
 
 

@@ -1,0 +1,32 @@
+{
+    "defaultSeverity": "warning",
+    "extends": [
+        "tslint:all"
+    ],
+    "linterOptions": {
+      "exclude": [
+          "src/proto/*"
+      ]
+    },
+    "jsRules": {},
+    "rules": {
+        "no-inferrable-types": false,
+        "no-unsafe-any": false,
+        "no-any": false,
+        "max-classes-per-file": false,
+        "only-arrow-functions": false,
+        "strict-boolean-expressions": false,
+        "completed-docs": [
+            true,
+            {
+              "classes": true,
+              "properties": {
+                "privacies": [
+                    "public"
+                  ]
+                }            
+            }
+          ]
+    },
+    "rulesDirectory": []
+}
