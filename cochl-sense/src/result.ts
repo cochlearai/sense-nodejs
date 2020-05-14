@@ -1,3 +1,4 @@
+/*tslint:disable variable-name*/
 
 /**
  * Event contains data for one given event :
@@ -5,19 +6,19 @@
  */
 export class Event {
     /** end timestamp of the detected event since the begining of the inference */
-    public endTime: number;
+    public end_time: number;
     /** probablity for the event to happen. Its values is between 0 and 1 */
     public probability: string;
     /** start timestamp of the detected event since the begining of the inference */
-    public startTime: number;
+    public start_time: number;
     /** name of the detected event */
     public tag: string;
 
     public constructor(json: any) {
         this.tag = json.tag;
         this.probability = json.probability;
-        this.startTime = json.start_time;
-        this.endTime = json.end_time;
+        this.start_time = json.start_time;
+        this.end_time = json.end_time;
     }
 }
 
@@ -59,7 +60,7 @@ export class Result {
         const overlappableEvents: Map<string, Array<[number, number]>> = new Map();
         for (const ev of this.detectedEvents()) {
             const times: Array<[number, number]> = overlappableEvents.get(ev.tag) || [];
-            times.push([ev.startTime, ev.endTime]);
+            times.push([ev.start_time, ev.end_time]);
             overlappableEvents.set(ev.tag, times);
         }
 
@@ -80,8 +81,11 @@ export class Result {
         return this.svc;
     }
 
-    public toJSON(): string {
-        return JSON.stringify(this);
+    public toJSON(): any {
+        return {
+            events: this.events,
+            service: this.svc,
+        };
     }
 
     public useDefaultFilter(): Result {
