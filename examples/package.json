@@ -9,7 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "naudiodon": "^2.2.1",
-    "cochl-sense": "^1.0.0"
+    "naudiodon": "^2.2.1"
   }
 }
