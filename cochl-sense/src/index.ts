@@ -1,2 +1,3 @@
 export { File, FileBuilder } from "./file";
-export { Stream, StreamBuilder, Datatype } from "./stream";
+export { Stream } from "./stream";
+export { StreamBuilder, Datatype } from "./streamBuilder";

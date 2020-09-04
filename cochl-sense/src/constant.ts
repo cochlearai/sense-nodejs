@@ -1,7 +1,13 @@
 export const HOST: string = "sense.cochlear.ai:50050";
 export const MAX_DATA_SIZE: number = 1048576; // 1 MB
-export const API_VERSION: string = "v1.0";
-export const USER_AGENT: string = "nodejs-v1.0.0";
+export const API_VERSION: string = "v1.1";
+export const USER_AGENT: string = "nodejs-v1.1.0";
+export const MIN_RECOMMANDED_SAMPLING_RATE: number = 22050;
+export const API_KEY_METADATA: string = "api_key";
+export const FORMAT_METADATA: string = "format";
+export const API_VERSION_METADATA: string = "api_version";
+export const USER_AGENT_METADATA: string = "user_agent";
+export const SMART_FILTERING_METADATA: string = "smart_filtering";
 export const SERVER_CA_CERTIFICATE: Buffer = Buffer.from(`-----BEGIN CERTIFICATE-----
 MIIFOTCCAyGgAwIBAgIUWoqB5PrB4YVtIXwfw7BR8HTxmUwwDQYJKoZIhvcNAQEL
 BQAwLDEUMBIGA1UEAwwLQ29jaGxlYXIuYWkxFDASBgNVBAoMC0NvY2hsZWFyLmFp

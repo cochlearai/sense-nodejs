@@ -4,63 +4,52 @@
 var grpc = require('grpc');
 var SenseClient_pb = require('./SenseClient_pb.js');
 
-function serialize_sense_full_v1_Request(arg) {
-  if (!(arg instanceof SenseClient_pb.Request)) {
-    throw new Error('Expected argument of type sense.full.v1.Request');
+function serialize_sense_full_v1_Audio(arg) {
+  if (!(arg instanceof SenseClient_pb.Audio)) {
+    throw new Error('Expected argument of type sense.full.v1.Audio');
   }
-  return new Buffer(arg.serializeBinary());
+  return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_sense_full_v1_Request(buffer_arg) {
-  return SenseClient_pb.Request.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_sense_full_v1_Audio(buffer_arg) {
+  return SenseClient_pb.Audio.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
-function serialize_sense_full_v1_RequestStream(arg) {
-  if (!(arg instanceof SenseClient_pb.RequestStream)) {
-    throw new Error('Expected argument of type sense.full.v1.RequestStream');
+function serialize_sense_full_v1_CochlSense(arg) {
+  if (!(arg instanceof SenseClient_pb.CochlSense)) {
+    throw new Error('Expected argument of type sense.full.v1.CochlSense');
   }
-  return new Buffer(arg.serializeBinary());
+  return Buffer.from(arg.serializeBinary());
 }
 
-function deserialize_sense_full_v1_RequestStream(buffer_arg) {
-  return SenseClient_pb.RequestStream.deserializeBinary(new Uint8Array(buffer_arg));
-}
-
-function serialize_sense_full_v1_Response(arg) {
-  if (!(arg instanceof SenseClient_pb.Response)) {
-    throw new Error('Expected argument of type sense.full.v1.Response');
-  }
-  return new Buffer(arg.serializeBinary());
-}
-
-function deserialize_sense_full_v1_Response(buffer_arg) {
-  return SenseClient_pb.Response.deserializeBinary(new Uint8Array(buffer_arg));
+function deserialize_sense_full_v1_CochlSense(buffer_arg) {
+  return SenseClient_pb.CochlSense.deserializeBinary(new Uint8Array(buffer_arg));
 }
 
 
-var SenseService = exports.SenseService = {
-  sense: {
-    path: '/sense.full.v1.Sense/sense',
+var CochlService = exports.CochlService = {
+  sensefile: {
+    path: '/sense.full.v1.Cochl/sensefile',
     requestStream: true,
     responseStream: false,
-    requestType: SenseClient_pb.Request,
-    responseType: SenseClient_pb.Response,
-    requestSerialize: serialize_sense_full_v1_Request,
-    requestDeserialize: deserialize_sense_full_v1_Request,
-    responseSerialize: serialize_sense_full_v1_Response,
-    responseDeserialize: deserialize_sense_full_v1_Response,
+    requestType: SenseClient_pb.Audio,
+    responseType: SenseClient_pb.CochlSense,
+    requestSerialize: serialize_sense_full_v1_Audio,
+    requestDeserialize: deserialize_sense_full_v1_Audio,
+    responseSerialize: serialize_sense_full_v1_CochlSense,
+    responseDeserialize: deserialize_sense_full_v1_CochlSense,
   },
-  sense_stream: {
-    path: '/sense.full.v1.Sense/sense_stream',
+  sensestream: {
+    path: '/sense.full.v1.Cochl/sensestream',
     requestStream: true,
     responseStream: true,
-    requestType: SenseClient_pb.RequestStream,
-    responseType: SenseClient_pb.Response,
-    requestSerialize: serialize_sense_full_v1_RequestStream,
-    requestDeserialize: deserialize_sense_full_v1_RequestStream,
-    responseSerialize: serialize_sense_full_v1_Response,
-    responseDeserialize: deserialize_sense_full_v1_Response,
+    requestType: SenseClient_pb.Audio,
+    responseType: SenseClient_pb.CochlSense,
+    requestSerialize: serialize_sense_full_v1_Audio,
+    requestDeserialize: deserialize_sense_full_v1_Audio,
+    responseSerialize: serialize_sense_full_v1_CochlSense,
+    responseDeserialize: deserialize_sense_full_v1_CochlSense,
   },
 };
 
-exports.SenseClient = grpc.makeGenericClientConstructor(SenseService);
+exports.CochlClient = grpc.makeGenericClientConstructor(CochlService);

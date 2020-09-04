@@ -1,14 +1,19 @@
-const { FileBuilder } = require("cochl-sense")
+const { FileBuilder } = require("../cochl-sense/lib")
 const { readFileSync } = require("fs")
 
-const apiKey = "<Enter-API-Key>";
-
+const apiKey = "< Enter API Key >"
 file = readFileSync("resources/siren.wav")
+format = "wav"
 
-new FileBuilder().withAPIKey(apiKey).withFormat("wav").withReader(file).build().inference()
-.then(resp => {
-    console.log(resp.detectedEventTiming())
-})
-.catch( err => {
-    console.log(err)
-})
+new FileBuilder()
+    .withAPIKey(apiKey)
+    .withReader(file)
+    .withFormat(format)
+    .withSmartFiltering(true)
+    .build().inference()
+    .then(event => {
+	    console.log(event.detectedEventTiming())
+    })
+    .catch(err => {
+        console.log(err)
+    })

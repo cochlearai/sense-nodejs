@@ -1,7 +1,11 @@
-import { ChannelCredentials, Client, credentials, Metadata } from "grpc";
+import { ChannelCredentials, credentials, Metadata } from "grpc";
 
 import { getTimeOut } from "./common";
-import { API_VERSION, HOST, MAX_DATA_SIZE, SERVER_CA_CERTIFICATE, USER_AGENT } from "./constant";
+import {
+    API_KEY_METADATA, API_VERSION, API_VERSION_METADATA,
+    FORMAT_METADATA, HOST, MAX_DATA_SIZE, SERVER_CA_CERTIFICATE,
+    SMART_FILTERING_METADATA, USER_AGENT, USER_AGENT_METADATA,
+} from "./constant";
 import * as senseclient from "./proto/SenseClient_grpc_pb.js";
 import * as proto from "./proto/SenseClient_pb.js";
 import { Result } from "./result";
@@ -16,20 +20,22 @@ const FILE_FORMAT: string[] = ["wav", "mp3", "ogg", "flac", "mp4"];
  * @inference
  */
 export class File {
-private readonly apiKey: string;
-private readonly format: string;
-private readonly host: string;
-private inferenced: boolean = false;
-private readonly reader: Buffer;
+    private readonly apiKey: string;
+    private readonly format: string;
+    private readonly host: string;
+    private inferenced: boolean = false;
+    private readonly reader: Buffer;
+    private readonly smartFiltering: boolean;
 
-public constructor(host: string, apiKey: string, reader: Buffer, format: string) {
-    this.host = host;
-    this.apiKey = apiKey;
-    this.reader = reader;
-    this.format = format;
-}
+    public constructor(host: string, apiKey: string, reader: Buffer, format: string, smartFiltering: boolean) {
+        this.host = host;
+        this.apiKey = apiKey;
+        this.reader = reader;
+        this.format = format;
+        this.smartFiltering = smartFiltering;
+    }
 
-public async inference(): Promise<Result> {
+    public async inference(): Promise<Result> {
         if (this.inferenced) {
             throw new Error("file was already inferenced");
         }
@@ -37,10 +43,18 @@ public async inference(): Promise<Result> {
 
         return new Promise((resolve: (result: Result) => void, reject: (err: Error) => void): void => {
             const creds: ChannelCredentials = credentials.createSsl(SERVER_CA_CERTIFICATE);
-            const client: any = new senseclient.SenseClient(this.host, creds);
+            const client: any = new senseclient.CochlClient(this.host, creds);
             const timeOutMetadata: Metadata = getTimeOut();
 
-            const call: any = client.sense(timeOutMetadata, (err: any, response: any): any => {
+            timeOutMetadata.add(API_KEY_METADATA, this.apiKey);
+            timeOutMetadata.add(FORMAT_METADATA, this.format);
+            timeOutMetadata.add(API_VERSION_METADATA, API_VERSION);
+            timeOutMetadata.add(USER_AGENT_METADATA, USER_AGENT);
+            if (this.smartFiltering) {
+                timeOutMetadata.add(SMART_FILTERING_METADATA, "true");
+            }
+
+            const call: any = client.sensefile(timeOutMetadata, (err: any, response: any): any => {
                 if (err) {
                     reject(err);
 
@@ -57,16 +71,17 @@ public async inference(): Promise<Result> {
         });
     }
 
-private *grpcRequests(): IterableIterator<any> {
+    private *grpcRequests(): IterableIterator<any> {
         const n: number = this.reader.length;
+        let offset: number = 0;
         for (let i: number = 0; i < n; i += MAX_DATA_SIZE) {
             const segment: Buffer = this.reader.slice(i, i + MAX_DATA_SIZE);
-            const request: any = new (proto as any).Request();
-            request.setApikey(this.apiKey);
+            const request: any = new (proto as any).Audio();
             request.setData(segment);
-            request.setFormat(this.format);
-            request.setApiVersion(API_VERSION);
-            request.setUserAgent(USER_AGENT);
+            request.setSegmentoffset(offset);
+            request.setSegmentstarttime(0);
+
+            offset += segment.length;
             yield request;
         }
 
@@ -86,9 +101,12 @@ export class FileBuilder {
     public host: string;
     /** data reader to the file data */
     public reader?: Buffer;
+    /** activate smartfiltering or not */
+    public smartFiltering: boolean;
 
     public constructor() {
         this.host = HOST;
+        this.smartFiltering = false;
     }
 
     public build(): File {
@@ -102,7 +120,7 @@ export class FileBuilder {
             throw new Error("format was not defined");
         }
 
-        return new File(this.host, this.apiKey, this.reader, this.format);
+        return new File(this.host, this.apiKey, this.reader, this.format, this.smartFiltering);
     }
 
     public withAPIKey(key: string): FileBuilder {
@@ -125,6 +143,12 @@ export class FileBuilder {
 
     public withReader(reader: Buffer): FileBuilder {
         this.reader = reader;
+
+        return this;
+    }
+
+    public withSmartFiltering(activate: boolean): FileBuilder {
+        this.smartFiltering = activate;
 
         return this;
     }

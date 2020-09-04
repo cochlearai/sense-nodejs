@@ -1,6 +1,6 @@
 # Sense Nodejs
 
-This repository is splitted in two folders : 
+This repository is splitted in two folders : 
 - `cochl-sense` contains the source code of the cochlear.ai sense nodejs client
 - `examples` contains examples sample
 
@@ -8,13 +8,13 @@ This repository is splitted in two folders : 
 
 Go in examples folder
 
-Install dependencies : `npm install`
+Install dependencies : `npm install`
 
 Modify `apiKey` in `file.js` and `naudiodon.js` with one of your API key that you can get at https://dashboard.cochlear.ai
 
 You can now inference a file : `node file.js`
 
-Or inference audio from your microphone : `node naudiodon.js`
+Or inference audio from your microphone : `node naudiodon.js`
 
 ## Use the library
 
@@ -65,6 +65,8 @@ interface FileBuilder {
     withFormat(format: string): FileBuilder;
     /** data reader to the file data */
     withReader(reader: Buffer): FileBuilder;
+    /** activate or not the smartfiltering (default off) */
+    withSmartFiltering(smartFiltering: Boolean): Filebuilder;
     
     /** creates a File instance*/
     build(): File;
@@ -126,7 +128,9 @@ interface SrteamBuilder {
     withSamplingRate(samplingRate: number): StreamBuilder;
     /** data of the pcm stream */
     withStreamer(streamer: Readable): StreamBuilder;
-
+    /** activate or not the smartfiltering (default off) */
+    withSmartFiltering(smartFiltering: Boolean): StreamBuilder;
+    
     /** creates a Stream instance*/
     build(): Stream;
 
@@ -156,11 +160,11 @@ Multiple results will be returned by a stream by calling a callback function. Fo
     detectedEventTiming(): Map<string, Array<[number, number]>>;
     /** return only the "tag" of the event that match the "filter" function */
     detectedTags(): string[];
-    /** returns the service name : "human-interaction" or "emergency" for instance*/
+    /** returns the service name : "human-interaction" or "emergency" for instance*/
     service(): string;
     /** returns a raw json object containing service name and an array of events */
     toJSON(): string;
-    /** use a filter function : that function takes an event as input and return a boolean. An event will be "detected" if the filter function returns true for that event */
+    /** use a filter function : that function takes an event as input and return a boolean. An event will be "detected" if the filter function returns true for that event */
     useDefaultFilter(): Result;
     /** the default filter is to consider all events as detected. So by default, allEvents() and detectedEvents() will return the same result */
     withFilter(filter: (ev: Event) => boolean): Result;

@@ -8,17 +8,17 @@ export class Event {
     /** end timestamp of the detected event since the begining of the inference */
     public end_time: number;
     /** probablity for the event to happen. Its values is between 0 and 1 */
-    public probability: string;
+    public probability: number;
     /** start timestamp of the detected event since the begining of the inference */
     public start_time: number;
     /** name of the detected event */
     public tag: string;
 
-    public constructor(json: any) {
-        this.tag = json.tag;
-        this.probability = json.probability;
-        this.start_time = json.start_time;
-        this.end_time = json.end_time;
+    public constructor(tag: string, start_time: number, end_time: number, probability: number) {
+        this.tag = tag;
+        this.start_time = start_time;
+        this.end_time = end_time;
+        this.probability = probability;
     }
 }
 
@@ -30,12 +30,9 @@ export class Result {
     private filter: (ev: Event) => boolean;
     private readonly svc: string;
 
-    public constructor(response: any) {
-        const jsonString: any = response.getOutputs();
-        const parsed: any = JSON.parse(jsonString);
-        const result: any = parsed.result;
-        this.svc = result.task;
-        this.events = result.frames.map((frame: any): Event => new Event(frame));
+    public constructor(cochlSense: any) {
+        this.svc = cochlSense.getService();
+        this.events = grpcToInternalEvent(cochlSense);
         this.filter = (_: Event): boolean => true;
     }
 
@@ -44,10 +41,7 @@ export class Result {
     }
 
     public appendNewResult(response: any, maxStoredEvents: number): void {
-        const jsonString: any = response.getOutputs();
-        const parsed: any = JSON.parse(jsonString);
-        const result: any = parsed.result;
-        const newevents: Event[] = result.frames.map((frame: any): Event => new Event(frame));
+        const newevents: Event[] = grpcToInternalEvent(response);
         this.events = this.events.slice(this.events.length - maxStoredEvents)
             .concat(newevents);
     }
@@ -99,6 +93,20 @@ export class Result {
 
         return this;
     }
+
+}
+
+function grpcToInternalEvent(cochlSense: any): Event[] {
+    const events: Event[] = cochlSense.getEventsList();
+
+    return events.map((frame: any): Event => {
+        const tag: string = frame.getTag();
+        const start_time: number = frame.getStarttime();
+        const end_time: number = frame.getEndtime();
+        const probability: number = frame.getProbability();
+
+        return new Event(tag, start_time, end_time, probability);
+    });
 }
 
 function mergeOverlappingEvents(times: Array<[number, number]> | undefined): Array<[number, number]> {
@@ -109,7 +117,7 @@ function mergeOverlappingEvents(times: Array<[number, number]> | undefined): Arr
     const sorted: Array<[number, number]> = times.sort(
         (a: [number, number], b: [number, number]): number =>
             a[0] - b[0],
-        );
+    );
     const merged: Array<[number, number]> = [times[0]];
 
     for (const time of sorted) {

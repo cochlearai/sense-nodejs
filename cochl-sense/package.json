@@ -1,6 +1,6 @@
 {
   "name": "cochl-sense",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Cochlearai nodejs client",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
@@ -15,13 +15,14 @@
     "postversion": "git push && git push --tags"
   },
   "author": "support@cochlear.ai",
+  "homepage": "https://cochlear.ai",
   "keywords": [
     "ai",
     "nodejs",
     "cochlearai",
     "audio"
   ],
-  "license": "ISC",
+  "license": "MIT",
   "devDependencies": {
     "@types/node": "^13.13.4",
     "tslint": "^6.1.2",
